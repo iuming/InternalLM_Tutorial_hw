@@ -389,3 +389,122 @@ streamlit run /root/code/lagent/examples/react_web_demo.py --server.address 127.
 切换到` VScode `页面，运行成功后，将端口映射到本地。在本地浏览器输入 http://127.0.0.1:6006 即可。
 
 ![alt text](image-19.png)
+
+
+# 实战：部署实战营优秀作品 八戒-Chat-1.8B 模型
+
+使用 git 命令来获得仓库内的 Demo 文件：
+```bash
+cd /root/
+git clone https://gitee.com/InternLM/Tutorial -b camp2
+cd /root/Tutorial
+```
+
+下载运行 Chat-八戒 Demo
+![alt text](image-21.png)
+![alt text](image-22.png)
+在` Web IDE `中执行` bajie_download.py`：
+```bash
+python /root/Tutorial/helloworld/bajie_download.py
+streamlit run /root/Tutorial/helloworld/bajie_chat.py --server.address 127.0.0.1 --server.port 6006
+```
+在本地poeweshell中输入：
+```bash
+ssh -CNg -L 6006:127.0.0.1:6006 root@ssh.intern-ai.org.cn -p 38374
+```
+![alt text](image-23.png)
+![alt text](image-24.png)
+
+
+
+# 基础作业 (结营必做)
+
+使用` InternLM2-Chat-1.8B `模型生成` 300 `字的小故事：
+![alt text](image-20.png)
+
+# 进阶作业 (优秀学员必做)
+
+- 熟悉` huggingface `下载功能，使用` huggingface_hub python `包，下载` InternLM2-Chat-7B `的` config.json `文件到本地
+
+使用 Hugging Face 官方提供的 huggingface-cli 命令行工具。安装依赖:
+```bash
+pip install -U huggingface_hub
+```
+![alt text](image-25.png)
+
+新建一个python文件，编写：
+```python
+import os 
+from huggingface_hub import hf_hub_download  # Load model directly 
+
+hf_hub_download(repo_id="internlm/internlm2-7b", filename="config.json")
+```
+![alt text](image-26.png)
+
+执行代码:
+```bash
+python download_hf_config.py
+```
+![alt text](image-27.png)
+
+- 完成 浦语·灵笔2 的 图文创作 及 视觉问答 部署
+
+启用conda环境：
+```bash
+conda activate demo
+# 补充环境包
+pip install timm==0.4.12 sentencepiece==0.1.99 markdown2==2.4.10 xlsxwriter==3.1.2 gradio==4.13.0 modelscope==1.9.5
+```
+![alt text](image-28.png)
+
+下载` InternLM-XComposer `仓库 相关的代码资源：
+```bash
+cd /root/demo
+git clone https://gitee.com/internlm/InternLM-XComposer.git
+cd /root/demo/InternLM-XComposer
+git checkout f31220eddca2cf6246ee2ddf8e375a40457ff626
+```
+在` terminal `中输入指令，构造软链接快捷访问方式：
+```bash
+ln -s /root/share/new_models/Shanghai_AI_Laboratory/internlm-xcomposer2-7b /root/models/internlm-xcomposer2-7b
+ln -s /root/share/new_models/Shanghai_AI_Laboratory/internlm-xcomposer2-vl-7b /root/models/internlm-xcomposer2-vl-7b
+```
+
+
+图文写作实战
+```bash
+cd /root/InternLM-XComposer
+python /root/InternLM-XComposer/examples/gradio_demo_composition.py  \
+--code_path /root/models/internlm-xcomposer2-7b \
+--private \
+--num_gpus 1 \
+--port 6006
+```
+![alt text](image-29.png)
+
+在本地powershell中输入：
+```bash
+ssh -CNg -L 6006:127.0.0.1:6006 root@ssh.intern-ai.org.cn -p 35044
+```
+![alt text](image-30.png)
+![alt text](image-31.png)
+
+
+图片理解实战
+输入下列指令：
+```bash
+conda activate demo
+
+cd /root/InternLM-XComposer
+python /root/InternLM-XComposer/examples/gradio_demo_chat.py  \
+--code_path /root/models/internlm-xcomposer2-vl-7b \
+--private \
+--num_gpus 1 \
+--port 6006
+```
+![alt text](image-32.png)
+
+
+- 完成` Lagent `工具调用 数据分析` Demo `部署
+
+见上面部分！
